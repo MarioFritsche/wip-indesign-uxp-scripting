@@ -8,3 +8,13 @@ InDesign UXP Skripting-Beispiele. Für den produktiven Einsatz bedingt zu verwen
 
 **Color-Schema**
 ![This is an image](/src/img/screen_dialog.png)
+Je nachdem, welches Farbmotiv in InDesign gewählt worden ist (Voreinstellungen -> Benutzeroberfläche -> Farbmotiv), können Farben im Dialog-Fenster festgelegt werden.
+
+```
+function PreferColors(prefersColor) {
+switch (preferscolorscheme) {
+    case 1.0:
+    ...
+
+// 1.0 => Hell, 0.51 => Mittelhell, 0.5 => Mitteldunkel, 0.0 => Dunkel
+```
