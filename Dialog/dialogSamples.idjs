@@ -1,0 +1,171 @@
+// Config
+const dialogId = "myDialog";
+const dialogConfig = {
+  title: "InDesign Test UXP",
+  size: {
+    width: 500,
+    height: 500,
+  },
+};
+
+const preferscolorscheme = app.generalPreferences.uiBrightnessPreference;
+
+// CSS
+const styles = `
+html, body {
+  height: 100vh;
+}
+
+sp-heading, 
+sp-label,
+sp-action-button {
+  color: ${PreferColors(preferscolorscheme)};
+  fill: ${PreferColors(preferscolorscheme)};
+}
+
+sp-theme {
+  height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 5px 10px 10px;
+}
+
+div#${dialogId}-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+div#${dialogId}-main {
+  flex: 1;
+  overflow-y: scroll; 
+  color: ${PreferColors(preferscolorscheme)};
+}
+
+div#${dialogId}-footer {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding-top: 20px;
+}
+
+sp-label {
+  font-size: 14px;
+}
+
+sp-textfield {
+  width: 400px;
+}
+
+`;
+
+// HTML
+const template = `
+<!DOCTYPE html>
+<html lang="de">
+  <body>
+    <sp-theme theme="sectrum" scale="medium">
+      <div id="${dialogId}-header">
+        <sp-heading size="X">Test-Dialog UXP</sp-heading>
+      </div>
+
+      <div id="${dialogId}-main">
+        <sp-textfield id="${dialogId}-inputHinweis" placeholder="Dein Text">
+          <sp-label isrequired="false" slot="label">Deine Eingabe</sp-label>
+        </sp-textfield>
+        <sp-action-button id="${dialogId}-bubbleOut" quiet>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="17"
+            viewBox="100 50 100 200"
+            width="15">
+            <path
+              class="fill"
+              d="M304.5,0H32.1C14.4,0,0,14.4,0,32.1v180.5c0,17.7,14.4,32.1,32.1,32.1h46.6c-6.1,22.3-14.2,40.8-24.1,55.1c-1.5,2.2-1.3,5.2,0.4,7.2c1.1,1.3,2.8,2,4.4,2c0.9,0,1.8-0.2,2.7-0.7c29.2-15.2,55.4-36.6,77.9-63.6h164.5c17.7,0,32.1-14.4,32.1-32.1V32.1C336.6,14.4,322.2,0,304.5,0L304.5,0z M247.1,179.3H89.4c-4,0-7.3-3.3-7.3-7.3s3.3-7.3,7.3-7.3h157.7c4,0,7.3,3.3,7.3,7.3S251.1,179.3,247.1,179.3L247.1,179.3z M247.1,129.6H89.4c-4,0-7.3-3.3-7.3-7.3s3.3-7.3,7.3-7.3h157.7c4,0,7.3,3.3,7.3,7.3S251.1,129.6,247.1,129.6L247.1,129.6z M247.1,80H89.4c-4,0-7.3-3.3-7.3-7.3s3.3-7.3,7.3-7.3h157.7c4,0,7.3,3.3,7.3,7.3S251.1,80,247.1,80L247.1,80z" />
+          </svg>
+        </sp-action-button>
+      </div>
+      <div id="${dialogId}-footer">
+        <sp-button id="${dialogId}-close-button">OK</sp-button>
+      </div>
+    </sp-theme>
+  </body>
+</html>
+`;
+
+function createDialog(dialogId, styles, template) {
+  const styleElem = document.createElement("style");
+  const stylesTextNode = document.createTextNode(styles);
+  styleElem.appendChild(stylesTextNode);
+
+  const headElem = document.querySelector("head");
+  headElem.appendChild(styleElem);
+
+  const dialogElem = document.createElement("dialog");
+  dialogElem.setAttribute("id", dialogId);
+  dialogElem.innerHTML = template;
+
+  document.body.appendChild(dialogElem);
+
+  const inputText = document.getElementById(`${dialogId}-inputHinweis`);
+
+  const closeButtonElem = document.getElementById(`${dialogId}-close-button`);
+  closeButtonElem.addEventListener("click", (evt) => {
+    dialogElem.close("OK");
+  });
+
+  const bubbleElem = document.getElementById(`${dialogId}-bubbleOut`);
+  bubbleElem.addEventListener("click", (evt) => {
+    alert("Deine Eingabe", inputText.value);
+  });
+
+  return dialogElem;
+}
+
+const dialogElem = createDialog(dialogId, styles, template);
+await dialogElem.showModal(dialogConfig);
+
+// Systemfarbe
+function PreferColors(prefersColor) {
+  var prefersColor = "";
+  switch (preferscolorscheme) {
+    case 1.0:
+      prefersColor = "rgb(56, 76, 95)";
+      break;
+    case 0.51:
+      prefersColor = "rgb(56, 76, 95)";
+      break;
+    case 0.5:
+      prefersColor = "rgb(222, 222, 222)";
+      break;
+    case 0.0:
+      prefersColor = "rgb(222, 222, 222)";
+      break;
+  }
+
+  return prefersColor;
+}
+
+function alert(messageTitle, message) {
+  with ((theDialog = app.dialogs.add({ name: messageTitle }))) {
+    with (dialogColumns.add()) {
+      with (dialogRows.add()) {
+        with (staticTexts.add()) {
+          staticTexts.add({
+            staticLabel: message,
+          });
+          with (dialogColumns.add()) {
+            with (dialogColumns.add()) {
+              dialogRows.canCancel = false;
+              theDialog.show();
+              theDialog.destroy();
+            }
+          }
+        }
+      }
+    }
+  }
+}
