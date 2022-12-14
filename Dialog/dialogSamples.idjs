@@ -18,9 +18,12 @@ html, body {
 
 sp-heading, 
 sp-label,
-sp-action-button {
+sp-action-button,
+sp-button,
+sp-detail {
   color: ${PreferColors(preferscolorscheme)};
   fill: ${PreferColors(preferscolorscheme)};
+  border-color: ${PreferColors(preferscolorscheme)};
 }
 
 sp-theme {
@@ -52,12 +55,23 @@ div#${dialogId}-footer {
   padding-top: 20px;
 }
 
-sp-label {
+sp-label,
+sp-detail {
   font-size: 14px;
 }
 
-sp-textfield {
+sp-textfield,
+sp-dropdown {
   width: 400px;
+}
+
+sp-divider {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+sp-detail {
+  margin-bottom:10px;
 }
 
 `;
@@ -76,17 +90,59 @@ const template = `
         <sp-textfield id="${dialogId}-inputHinweis" placeholder="Dein Text">
           <sp-label isrequired="false" slot="label">Deine Eingabe</sp-label>
         </sp-textfield>
-        <sp-action-button id="${dialogId}-bubbleOut" quiet>
+        <sp-action-button
+          id="${dialogId}-bubbleOut"
+          style="padding: 0; max-width: 32px; max-height: 32px"
+          quiet>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            height="17"
-            viewBox="100 50 100 200"
-            width="15">
+            height="20"
+            viewBox="0 0 20 20"
+            width="20">
             <path
               class="fill"
-              d="M304.5,0H32.1C14.4,0,0,14.4,0,32.1v180.5c0,17.7,14.4,32.1,32.1,32.1h46.6c-6.1,22.3-14.2,40.8-24.1,55.1c-1.5,2.2-1.3,5.2,0.4,7.2c1.1,1.3,2.8,2,4.4,2c0.9,0,1.8-0.2,2.7-0.7c29.2-15.2,55.4-36.6,77.9-63.6h164.5c17.7,0,32.1-14.4,32.1-32.1V32.1C336.6,14.4,322.2,0,304.5,0L304.5,0z M247.1,179.3H89.4c-4,0-7.3-3.3-7.3-7.3s3.3-7.3,7.3-7.3h157.7c4,0,7.3,3.3,7.3,7.3S251.1,179.3,247.1,179.3L247.1,179.3z M247.1,129.6H89.4c-4,0-7.3-3.3-7.3-7.3s3.3-7.3,7.3-7.3h157.7c4,0,7.3,3.3,7.3,7.3S251.1,129.6,247.1,129.6L247.1,129.6z M247.1,80H89.4c-4,0-7.3-3.3-7.3-7.3s3.3-7.3,7.3-7.3h157.7c4,0,7.3,3.3,7.3,7.3S251.1,80,247.1,80L247.1,80z" />
+              d="M16.5,1H1.5a.5.5,0,0,0-.5.5v7a.5.5,0,0,0,.5.5h1A.5.5,0,0,0,3,8.5V3H15V15H9.5a.5.5,0,0,0-.5.5v1a.5.5,0,0,0,.5.5h7a.5.5,0,0,0,.5-.5V1.5A.5.5,0,0,0,16.5,1Z" />
+            <path
+              class="fill"
+              d="M9.318,13.882A.39051.39051,0,0,0,9.6,14a.4.4,0,0,0,.4-.377V8.25A.25.25,0,0,0,9.75,8H4.377A.4.4,0,0,0,4,8.4a.392.392,0,0,0,.1175.28l1.893,1.893-4.521,4.523a.5.5,0,0,0-.00039.70711l.00039.00039.707.707a.5.5,0,0,0,.707,0l4.5215-4.521Z" />
           </svg>
         </sp-action-button>
+
+        <sp-divider class="divider" size="small"></sp-divider>
+
+        <sp-dropdown
+          id="${dialogId}-dropdownSelect"
+          placeholder="Make a selection...">
+          <sp-label slot="label">Deine Ausgabeliste</sp-label>
+          <sp-menu slot="options">
+            <sp-menu-item> Deselect </sp-menu-item>
+            <sp-menu-item> Select inverse </sp-menu-item>
+            <sp-menu-item> Feather... </sp-menu-item>
+            <sp-menu-item> Select and mask... </sp-menu-item>
+            <sp-menu-divider></sp-menu-divider>
+            <sp-menu-item> Save selection </sp-menu-item>
+            <sp-menu-item disabled> Make work path </sp-menu-item>
+          </sp-menu>
+        </sp-dropdown>
+        <sp-action-button
+          id="${dialogId}-dropdownOut"
+          style="padding: 0; max-width: 32px; max-height: 32px"
+          quiet>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20">
+            <path
+              class="fill"
+              d="M16.5,1H1.5a.5.5,0,0,0-.5.5v7a.5.5,0,0,0,.5.5h1A.5.5,0,0,0,3,8.5V3H15V15H9.5a.5.5,0,0,0-.5.5v1a.5.5,0,0,0,.5.5h7a.5.5,0,0,0,.5-.5V1.5A.5.5,0,0,0,16.5,1Z" />
+            <path
+              class="fill"
+              d="M9.318,13.882A.39051.39051,0,0,0,9.6,14a.4.4,0,0,0,.4-.377V8.25A.25.25,0,0,0,9.75,8H4.377A.4.4,0,0,0,4,8.4a.392.392,0,0,0,.1175.28l1.893,1.893-4.521,4.523a.5.5,0,0,0-.00039.70711l.00039.00039.707.707a.5.5,0,0,0,.707,0l4.5215-4.521Z" />
+          </svg>
+        </sp-action-button>
+
+        <sp-divider size="small"></sp-divider>
       </div>
       <div id="${dialogId}-footer">
         <sp-button id="${dialogId}-close-button">OK</sp-button>
@@ -110,16 +166,21 @@ function createDialog(dialogId, styles, template) {
 
   document.body.appendChild(dialogElem);
 
-  const inputText = document.getElementById(`${dialogId}-inputHinweis`);
-
   const closeButtonElem = document.getElementById(`${dialogId}-close-button`);
   closeButtonElem.addEventListener("click", (evt) => {
     dialogElem.close("OK");
   });
 
+  const inputText = document.getElementById(`${dialogId}-inputHinweis`);
   const bubbleElem = document.getElementById(`${dialogId}-bubbleOut`);
   bubbleElem.addEventListener("click", (evt) => {
     alert("Deine Eingabe", inputText.value);
+  });
+
+  const dropdownList = document.getElementById(`${dialogId}-dropdownSelect`);
+  const dropdownElem = document.getElementById(`${dialogId}-dropdownOut`);
+  dropdownElem.addEventListener("click", (evt) => {
+    alert("Deine Liste", dropdownList.value);
   });
 
   return dialogElem;

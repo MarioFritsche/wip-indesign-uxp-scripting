@@ -18,3 +18,11 @@ switch (preferscolorscheme) {
 
 // 1.0 => Hell, 0.51 => Mittelhell, 0.5 => Mitteldunkel, 0.0 => Dunkel
 ```
+
+**Eingabefeld**
+
+Der Inhalt eines Inputfeld wird im alert ausgegeben.
+
+**Auswahlliste**
+
+Der Inhalt eines Dropdownfeld wird im alert ausgegeben
